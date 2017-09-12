@@ -5,15 +5,13 @@
 </head>
 <body id="<%= pageId %>">
   <% include partials/template/header.ejs %>
-  <% include partials/content/speakersList.ejs %>  
     <div class="container">
       <div class="row">
         <div class="col-sm-8">
-          <% include partials/content/mainContent.ejs %>
+          <% include partials/content/speakersList.ejs %>
         </div>
         <!-- primary -->
-        <aside class="col-sm-4">
-            <% include partials/content/whoShouldCome.ejs %>
+        <aside class="col-sm-4">         
             <% include partials/content/artworkList.ejs %>
         </aside>
         <!-- secondary -->

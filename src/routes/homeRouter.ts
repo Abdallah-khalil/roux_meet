@@ -15,8 +15,18 @@ class HomeRouter {
      * GET home page.
      */
     public getIndex(req: Request, res: Response, next: NextFunction): void {
+        let data = req.app.get('appData');
+        let pagePhotos: Array<object> = [];
+        let pageSpeakers = data.speakers;
+        
+        data.speakers.forEach((item: any) => {
+            pagePhotos = pagePhotos.concat(item.artwork);
+        });
+
         res.render('index', {
-            pageTitle: 'Roux Meetups',           
+            pageTitle: 'Roux Meetups',
+            artwork: pagePhotos,
+            speakers: pageSpeakers,
             pageId: 'home'
         });
     };
