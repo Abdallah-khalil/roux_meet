@@ -1,8 +1,7 @@
 // import nodejs core module 
 const path = require('path');
-const Nodemon = require('nodemon-webpack-plugin');
 const nodeExt = require('webpack-node-externals');
-
+const WebpackShellPlugin = require('webpack-shell-plugin');
 
 const config = {
 
@@ -24,7 +23,11 @@ const config = {
     },
 
     plugins: [
-        new Nodemon()
+       // new Nodemon()      ,
+        new WebpackShellPlugin({
+            onBuildStart: ['echo "Starting"'],
+            onBuildEnd: ['nodemon ./build/roux-meet.bundle.js']
+          })
     ],
 
     output: {
@@ -35,7 +38,7 @@ const config = {
     module: {
         loaders: [{
             test: /\.ts$/,
-            include: [path.resolve(__dirname, "src")],
+            include: [path.join(__dirname, "src")],
             loader: "ts-loader"
         }]
     }

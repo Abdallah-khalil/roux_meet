@@ -8,6 +8,8 @@ import * as favicon from "serve-favicon";
 
 import HomeRouter from './routes/homeRouter';
 import SpeakersRouter from './routes/speakersRoute';
+import FeedbackRouter from './routes/feedbackRouter';
+import ApiRouter from './routes/apiRouter';
 
 const dataFile = require("./data/data.json");
 
@@ -38,10 +40,10 @@ class App {
         this.expressApp.use('/', HomeRouter);
         this.expressApp.use('/Home', HomeRouter);
         this.expressApp.use('/Speakers', SpeakersRouter);
+        this.expressApp.use('/Feedback', FeedbackRouter);
+        this.expressApp.use('/api', ApiRouter);
+
     };
-
-
-
 
 }
 

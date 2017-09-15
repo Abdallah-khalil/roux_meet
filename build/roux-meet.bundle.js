@@ -135,7 +135,9 @@ const logger = __webpack_require__(6);
 const path = __webpack_require__(7);
 const homeRouter_1 = __webpack_require__(8);
 const speakersRoute_1 = __webpack_require__(9);
-const dataFile = __webpack_require__(10);
+const feedbackRouter_1 = __webpack_require__(10);
+const apiRouter_1 = __webpack_require__(11);
+const dataFile = __webpack_require__(13);
 class App {
     constructor() {
         this.expressApp = express();
@@ -159,6 +161,8 @@ class App {
         this.expressApp.use('/', homeRouter_1.default);
         this.expressApp.use('/Home', homeRouter_1.default);
         this.expressApp.use('/Speakers', speakersRoute_1.default);
+        this.expressApp.use('/Feedback', feedbackRouter_1.default);
+        this.expressApp.use('/api', apiRouter_1.default);
     }
     ;
 }
@@ -282,9 +286,95 @@ exports.default = new SpeakerRouter().router;
 
 /***/ }),
 /* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __webpack_require__(0);
+class FeedbackRouter {
+    constructor() {
+        this.router = express_1.Router();
+        this.init();
+    }
+    init() {
+        this.router.get('/', this.getIndex);
+    }
+    getIndex(req, res, next) {
+        res.render('feedback', {
+            pageTitle: 'Roux Meetups -- feedback',
+            pageId: 'feedback'
+        });
+    }
+    ;
+}
+exports.default = new FeedbackRouter().router;
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __webpack_require__(0);
+const fs = __webpack_require__(15);
+const dataFile = __webpack_require__(12);
+class ApiRouter {
+    constructor() {
+        this.router = express_1.Router();
+        this.init();
+    }
+    init() {
+        this.router.get('/feedbacksData', this.getfeedbackData);
+        this.router.post('/feedbacksData', this.addFeedback);
+        this.router.delete('/feedbacksData/:id', this.deleteFeedback);
+    }
+    getfeedbackData(req, res, next) {
+        res.json(dataFile);
+    }
+    ;
+    addFeedback(req, res, next) {
+        dataFile.unshift(req.body);
+        fs.writeFile('src/data/feedback.json', JSON.stringify(dataFile), 'utf8', (error) => {
+            if (error)
+                console.log(error);
+        });
+        res.json(dataFile);
+    }
+    ;
+    deleteFeedback(req, res, next) {
+        dataFile.splice(req.params.id, 1);
+        fs.writeFile('src/data/feedback.json', JSON.stringify(dataFile), 'utf8', (error) => {
+            if (error)
+                console.log(error);
+        });
+        res.json(dataFile);
+    }
+    ;
+}
+exports.default = new ApiRouter().router;
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+module.exports = [{"name":"abdallah","title":"this is actually cool","message":"really adding new files and edit them with nodejs is soo cool "},{"name":"Jane","title":"Meeting Time","message":"Would you consider moving the meeting time 30 minutes to about 6pm. It's tough to make it to the meetings on time right after work."},{"name":"Roy","title":"Great Speaker","message":"I really enjoyed the speaker this month. Would love to hear another presentation."}]
+
+/***/ }),
+/* 13 */
 /***/ (function(module, exports) {
 
 module.exports = {"speakers":[{"title":"Art in Full Bloom","name":"Lorenzo Garcia","shortname":"Lorenzo_Garcia","summary":"Drawing and painting flowers may seem like a first-year art student's assignment, but Lorenzo Garcia brings depth, shadows, light, form and color to new heights with his unique and revolutionary technique of painting on canvas with ceramic glaze. This session is sure to be a hit with mixed media buffs.","description":"<p>Lorenzo was born in Mexico, but grew up in Southern California after his mother immigrated to Los Angeles when he was a year old. His mother worked as a seamstress in the Fashion District and brought home scrap materials for Lorenzo to create his early mixed media art. From that point on, Lorenzo became hooked on creating art from scrap metals, fabrics, wood, canvas, and many others. During his junior year at Bischon Art School in Los Angeles, he perfected his own proprietary method of painting on canvas with ceramic glaze, which he will demonstrate on Monday in his session, 'Art in Full Bloom'.</p><p>Lorenzo paints with an extraordinary amount of color, and prefers to create art centered around nature, animals, and science. Now in his senior year at Bischon, Lorenzo has been creating mixed media totem poles made from old telephone poles, and other recycled materials, and is already planning his next new technique that will likely inspire a trend for years to come.</p>","artwork":["Lorenzo_Garcia_01_tn.jpg","Lorenzo_Garcia_02_tn.jpg","Lorenzo_Garcia_03_tn.jpg","Lorenzo_Garcia_04_tn.jpg"]},{"title":"Deep Sea Wonders","name":"Hilary Goldywynn Post","shortname":"Hillary_Goldwynn","summary":"Hillary is a sophomore art sculpture student at New York University, and has won the major international prizes for painters, including the Divinity Circle and the International Painter's Medal. Hillary's exhibit features paintings that contain only water including waves, deep sea, and river.","description":"<p>Hillary is a sophomore art sculpture student at New York University, and has already won all the major international prizes for new painters, including the Divinity Circle, the International Painter's Medal, and the Academy of Paris Award. Hillary's CAC exhibit features paintings that contain only water images including waves, deep sea, and river.</p><p>An avid water sports participant, Hillary understands the water in many ways in which others do not, or may not ever have the opportunity. Her goal in creating the CAC exhibit was to share with others the beauty, power, and flow of natural bodies of water throughout the world. In addition to the display, Hilary also hosts a session on Tuesday called Deep Sea Wonders, which combines her love of deep sea diving and snorkeling, with instruction for capturing the beauty of underwater explorations on canvas.</p>","artwork":["Hillary_Goldwynn_01_tn.jpg","Hillary_Goldwynn_02_tn.jpg","Hillary_Goldwynn_03_tn.jpg","Hillary_Goldwynn_04_tn.jpg","Hillary_Goldwynn_05_tn.jpg","Hillary_Goldwynn_06_tn.jpg","Hillary_Goldwynn_07_tn.jpg"]},{"title":"The Art of Abstract","name":"Riley Rudolph Rewington","shortname":"Riley_Rewington","summary":"The leader of the MMA artistic movement in his hometown of Portland, Riley Rudolph Rewington draws a crowd wherever he goes. Mixing street performance, video, music, and traditional art, Riley has created some of the most unique and deeply poignant abstract works of his generation.","description":"<p>Riley started out as musician and street performance artist, and now blends painting and photography with audio, video, and computer multimedia to create what he calls 'Music and Multimedia Artworks.' Riley's innovations in using multimedia to express art have created a youth culture movement in his town of Portland, in which he remains at the forefront. In his role as the founder of the MMA art form, Riley has become an inspiration to many up and coming artists. However, the part Riley insists is most important to him, is that he's helped many troubled youth take control of their lives, and create their own unique, positive futures. Seeing kids he's mentored graduate from high school and enroll in college, gives art the purpose that Riley so craves.</p><p>A first-year student at the Roux Academy of Art, Media, and Design, Riley is already changing the face of modern art at the university. Riley's exquisite abstract pieces have no intention of ever being understood, but instead beg the viewer to dream, create, pretend, and envision with their mind's eye. Riley will be speaking on the 'Art of Abstract' during Thursday's schedule.</p>","artwork":["Riley_Rewington_01_tn.jpg","Riley_Rewington_02_tn.jpg","Riley_Rewington_03_tn.jpg","Riley_Rewington_04_tn.jpg","Riley_Rewington_05_tn.jpg","Riley_Rewington_06_tn.jpg"]}]}
+
+/***/ }),
+/* 14 */,
+/* 15 */
+/***/ (function(module, exports) {
+
+module.exports = require("fs");
 
 /***/ })
 /******/ ]);
