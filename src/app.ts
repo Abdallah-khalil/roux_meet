@@ -10,6 +10,7 @@ import HomeRouter from './routes/homeRouter';
 import SpeakersRouter from './routes/speakersRoute';
 import FeedbackRouter from './routes/feedbackRouter';
 import ApiRouter from './routes/apiRouter';
+import ChatRouter from './routes/chatRouter';
 
 const dataFile = require("./data/data.json");
 
@@ -42,6 +43,7 @@ class App {
         this.expressApp.use('/Speakers', SpeakersRouter);
         this.expressApp.use('/Feedback', FeedbackRouter);
         this.expressApp.use('/api', ApiRouter);
+        this.expressApp.use('/Chat', ChatRouter);
 
     };
 

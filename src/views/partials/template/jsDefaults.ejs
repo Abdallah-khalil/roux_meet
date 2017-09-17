@@ -6,7 +6,12 @@
     <script src="/js/pixgrid.js"></script>
     <% } %>
 
-    
-<% if (pageId === "feedback") { %>
-    <script src="/js/feedback.js"></script>
-    <% } %>
+
+        <% if (pageId === "feedback") { %>
+            <script src="/js/feedback.js"></script>
+            <% } %>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+                <% if (pageId === "chat") { %>
+                    <script src="/js/chat.js"></script>
+                    <% } %>

@@ -2,6 +2,7 @@ import * as http from 'http';
 import * as debug from 'debug';
 
 import App from './App';
+import socketIO = require('socket.io');
 
 
 
@@ -9,6 +10,16 @@ const port = normalizePort(process.env.PORT || 3000);
 App.set('port', port);
 
 const server = http.createServer(App);
+const io = socketIO(server);
+
+io.on('connection', (socket) => {
+
+    socket.on('postMessage', (data) => {
+        io.emit('updateMessages', data);
+    });
+
+});
+
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
@@ -24,11 +35,11 @@ function onError(error: NodeJS.ErrnoException): void {
     if (error.syscall !== 'listen') throw error;
     let bind = (typeof port === 'string') ? 'Pipe ' + port : 'Port ' + port;
     switch (error.code) {
-        case 'EACCES':           
+        case 'EACCES':
             process.exit(1);
             break;
         case 'EADDRINUSE':
-           
+
             process.exit(1);
             break;
         default:
